@@ -1,4 +1,4 @@
-import {actionTypes} from "../constants/index";
+import { actionTypes } from "../constants/index";
 
 const fileReducer = (state = {}, action) => {
   switch (action.type) {
@@ -45,7 +45,9 @@ const fileReducer = (state = {}, action) => {
       // to set selcted element
       return {
         ...state,
-        selectedItemId: action.payload.selectedItemId
+        selectedItemId: action.payload.selectedItemId,
+        showContextMenu: false,
+        showAddItemForm: false
       };
     case actionTypes.SETCURRENTPARENT:
       // to set current parent

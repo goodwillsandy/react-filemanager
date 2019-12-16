@@ -22,9 +22,18 @@ const SearchBar = props => {
     <div className="search_wrapper">
       <div>
         <label className="flex">
-          <input id="search_bar" className="search_bar" type="text" />
+          <input
+            id="search_bar"
+            className="search_bar"
+            type="text"
+            onKeyUp={e => {
+              let tosearch = document.getElementById("search_bar").value;
+              console.log(e.currentTarget.value);
+              !tosearch ? setSearch(false) : setSearch(true);
+              searchFunctionality(tosearch, props.currentParent);
+            }}
+          />
           <SearchButton
-            handleClick={e => console.log("Searching..")}
             src="/images/search_icon.svg"
             handleClick={() => {
               let tosearch = document.getElementById("search_bar").value;

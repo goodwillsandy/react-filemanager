@@ -14,7 +14,14 @@ const Explorer = props => {
   return (
     <>
       <SideBar fs={props.fs} handleClick={id => props.dispatchState(id)} />
-      <div className="explorer">
+      <div
+        className="explorer"
+        id="explorer-wrapper"
+        onClick={e => {
+          e.target.getAttribute("id") === "explorer-wrapper" &&
+            props.dispatchSelectedItem({ selectedItemId: null });
+        }}
+      >
         {/* top bar */}
         <Topbar
           fs={props.fs}
@@ -99,6 +106,7 @@ const Explorer = props => {
         {/* adding add file form modal */}
         {props.showAddItemForm ? (
           <AddItemForm
+            fs={props.fs}
             currentParent={props.currentParent}
             parentPath={props.fs[props.currentParent].path}
             handleClose={e =>

@@ -2,12 +2,25 @@ import React from "react";
 
 const AddItemForm = props => {
   let type = "folder";
+
+  const [isError, setIsError] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState("");
+
   let toggleActive = e => {
     let parent = e.currentTarget.parentNode.childNodes;
     Object.keys(parent).map(ele => parent[ele].classList.remove("active"));
     e.currentTarget.classList.add("active");
     type = e.currentTarget.innerHTML === "Folder" ? "folder" : "file";
   };
+
+  let isDuplicate = (query, currentParentId, type) => {
+    let children = props.fs[currentParentId].children;
+    let data = children.filter(
+      ele => props.fs[ele].name === query && props.fs[ele].type === type
+    );
+    return data.length > 0 ? true : false;
+  };
+
   return (
     <div className="addItem_wrapper">
       <div className="addItem_header text-center flex">
@@ -33,6 +46,12 @@ const AddItemForm = props => {
             let size = document.getElementById("item_size").value;
             let created_at = document.getElementById("item_creation_date")
               .value;
+            let isNameDuplicate = isDuplicate(name, props.currentParent, type);
+            if (isNameDuplicate) {
+              setIsError(true);
+              setErrorMsg("Duplicate name");
+              return;
+            }
             let date = Date.now();
             let key = btoa(`${date}-${name}-${size}-${author}-${type}`);
             let value = {
@@ -92,6 +111,11 @@ const AddItemForm = props => {
                 placeholder="Date"
               />
             </label>
+          </div>
+          <div className="form-control">
+            <p className="delete" id="additem-errormsg">
+              {isError && errorMsg}
+            </p>
           </div>
           <input
             className="submit_button"
